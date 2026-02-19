@@ -832,28 +832,95 @@ function initMusicToggle() {
     
     if (!musicToggle || !backgroundMusic) return;
     
+    // Set volume to avoid being too intrusive
+    backgroundMusic.volume = 0.5;
+    
     // Check for saved music preference
     const savedMusicState = localStorage.getItem('musicEnabled');
     if (savedMusicState === 'true') {
         musicToggle.checked = true;
-        backgroundMusic.play().catch(e => {
-            console.log('Auto-play prevented by browser:', e);
-        });
+        // Delay auto-play slightly to ensure page is fully loaded
+        setTimeout(() => {
+            playMusic();
+        }, 1000);
     }
     
-    musicToggle.addEventListener('change', () => {
-        if (musicToggle.checked) {
-            // Play music
-            backgroundMusic.play().then(() => {
+    // Function to play music with retry logic
+    function playMusic() {
+        if (!musicToggle.checked) return;
+        
+        const playPromise = backgroundMusic.play();
+        
+        if (playPromise !== undefined) {
+            playPromise.then(() => {
+                console.log('Music playing successfully');
                 localStorage.setItem('musicEnabled', 'true');
             }).catch(e => {
-                console.log('Play failed:', e);
-                musicToggle.checked = false;
+                console.log('Play failed, will retry on user interaction:', e);
+                // Don't uncheck - wait for user interaction
             });
+        }
+    }
+    
+    // Function to pause music
+    function pauseMusic() {
+        backgroundMusic.pause();
+        localStorage.setItem('musicEnabled', 'false');
+    }
+    
+    // Handle toggle change
+    musicToggle.addEventListener('change', () => {
+        if (musicToggle.checked) {
+            playMusic();
         } else {
-            // Pause music
+            pauseMusic();
+        }
+    });
+    
+    // Handle page visibility changes (phone calls, switching apps)
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+            // Page hidden - pause but remember state
             backgroundMusic.pause();
-            localStorage.setItem('musicEnabled', 'false');
+        } else {
+            // Page visible again - resume if toggle is on
+            if (musicToggle.checked) {
+                setTimeout(playMusic, 100);
+            }
+        }
+    });
+    
+    // Handle audio interruption (phone calls, notifications)
+    backgroundMusic.addEventListener('pause', () => {
+        // If paused but toggle is still on, try to resume
+        if (musicToggle.checked && !document.hidden) {
+            setTimeout(playMusic, 500);
+        }
+    });
+    
+    // Handle when audio can play through (after interruption)
+    backgroundMusic.addEventListener('canplaythrough', () => {
+        if (musicToggle.checked && backgroundMusic.paused) {
+            playMusic();
+        }
+    });
+    
+    // Retry on any user interaction if music should be on but isn't playing
+    const resumeEvents = ['click', 'touchstart', 'keydown', 'scroll'];
+    let resumeHandler = () => {
+        if (musicToggle.checked && backgroundMusic.paused) {
+            playMusic();
+        }
+    };
+    
+    resumeEvents.forEach(event => {
+        document.addEventListener(event, resumeHandler, { once: true });
+    });
+    
+    // Also try to resume when window gets focus
+    window.addEventListener('focus', () => {
+        if (musicToggle.checked && backgroundMusic.paused) {
+            setTimeout(playMusic, 100);
         }
     });
 }
