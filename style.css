@@ -5,45 +5,104 @@
 }
 
 :root {
-    --primary-color: #00d4ff;
-    --secondary-color: #7c3aed;
-    --accent-color: #ff6b6b;
-    --success-color: #10b981;
-    --warning-color: #f59e0b;
-    --danger-color: #ef4444;
-    --bg-dark: #0f172a;
-    --bg-card: #1e293b;
-    --bg-light: #334155;
-    --text-primary: #f1f5f9;
-    --text-secondary: #94a3b8;
-    --border-color: #475569;
+    /* Dark Theme (Default): Black, Blue, Green */
+    --primary-color: #0066ff;
+    --secondary-color: #0044cc;
+    --accent-color: #00cc66;
+    --success-color: #00ff66;
+    --warning-color: #ffaa00;
+    --danger-color: #ff3333;
+    --bg-dark: #000000;
+    --bg-card: #0a0a0a;
+    --bg-light: #1a1a1a;
+    --text-primary: #ffffff;
+    --text-secondary: #888888;
+    --border-color: #333333;
+    --shadow-color: rgba(0, 102, 255, 0.3);
+    --led-off: #222222;
 }
+
+[data-theme="light"] {
+    /* Light Theme: White, Red, Green */
+    --primary-color: #cc0000;
+    --secondary-color: #990000;
+    --accent-color: #00aa00;
+    --success-color: #00cc00;
+    --warning-color: #ff8800;
+    --danger-color: #cc0000;
+    --bg-dark: #ffffff;
+    --bg-card: #f5f5f5;
+    --bg-light: #e0e0e0;
+    --text-primary: #000000;
+    --text-secondary: #666666;
+    --border-color: #cccccc;
+    --shadow-color: rgba(204, 0, 0, 0.2);
+    --led-off: #dddddd;
+}
+
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+    background: var(--bg-dark);
     color: var(--text-primary);
     line-height: 1.6;
     min-height: 100vh;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
+
+/* Theme Toggle Button */
+.theme-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid var(--border-color);
+    background: var(--bg-card);
+    color: var(--primary-color);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    z-index: 1000;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px var(--shadow-color);
+}
+
+.theme-toggle:hover {
+    transform: scale(1.1);
+    border-color: var(--primary-color);
+    box-shadow: 0 6px 20px var(--shadow-color);
+}
+
+[data-theme="light"] .theme-toggle {
+    color: var(--primary-color);
+}
+
 
 /* Header Styles */
 header {
     text-align: center;
     padding: 40px 20px;
-    background: linear-gradient(180deg, rgba(15, 23, 42, 0.9) 0%, transparent 100%);
-    border-bottom: 1px solid var(--border-color);
+    background: var(--bg-card);
+    border-bottom: 2px solid var(--primary-color);
 }
+
 
 header h1 {
     font-size: 2.5rem;
-    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--primary-color);
     margin-bottom: 10px;
     animation: fadeInDown 0.8s ease-out;
+    text-shadow: 0 0 20px var(--shadow-color);
 }
+
+[data-theme="light"] header h1 {
+    text-shadow: none;
+}
+
 
 .subtitle {
     color: var(--text-secondary);
@@ -58,13 +117,13 @@ header h1 {
     justify-content: center;
     gap: 10px;
     padding: 20px;
-    background: rgba(30, 41, 59, 0.8);
-    backdrop-filter: blur(10px);
+    background: var(--bg-card);
     position: sticky;
     top: 0;
     z-index: 100;
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 2px solid var(--border-color);
 }
+
 
 .nav-btn {
     padding: 10px 20px;
@@ -78,16 +137,19 @@ header h1 {
 }
 
 .nav-btn:hover {
-    background: var(--secondary-color);
+    background: var(--primary-color);
+    color: var(--bg-dark);
     transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4);
+    box-shadow: 0 4px 15px var(--shadow-color);
 }
 
 .nav-btn.active {
-    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-    border-color: transparent;
-    box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+    background: var(--primary-color);
+    color: var(--bg-dark);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 20px var(--shadow-color);
 }
+
 
 /* Main Content */
 main {
@@ -133,8 +195,9 @@ main {
 .concept-card:hover {
     transform: translateY(-5px);
     border-color: var(--primary-color);
-    box-shadow: 0 10px 30px rgba(0, 212, 255, 0.1);
+    box-shadow: 0 10px 30px var(--shadow-color);
 }
+
 
 .concept-card h3 {
     color: var(--primary-color);
@@ -174,7 +237,9 @@ main {
 .type-item:hover {
     border-color: var(--primary-color);
     transform: scale(1.05);
+    box-shadow: 0 5px 20px var(--shadow-color);
 }
+
 
 .type-icon {
     display: block;
@@ -214,12 +279,13 @@ main {
 }
 
 .comparison-box.latch {
-    border-color: var(--warning-color);
+    border-color: var(--primary-color);
 }
 
 .comparison-box.flipflop {
     border-color: var(--success-color);
 }
+
 
 .comparison-box h4 {
     font-size: 1.5rem;
@@ -228,12 +294,13 @@ main {
 }
 
 .comparison-box.latch h4 {
-    color: var(--warning-color);
+    color: var(--primary-color);
 }
 
 .comparison-box.flipflop h4 {
     color: var(--success-color);
 }
+
 
 .comparison-box ul {
     list-style: none;
@@ -268,13 +335,15 @@ main {
 }
 
 .warning-box {
-    background: rgba(239, 68, 68, 0.1);
-    border: 1px solid var(--danger-color);
+    background: rgba(255, 0, 0, 0.1);
+    border: 2px solid var(--danger-color);
     padding: 15px;
     border-radius: 8px;
     margin-top: 15px;
-    color: var(--accent-color);
+    color: var(--danger-color);
+    font-weight: bold;
 }
+
 
 /* Circuit Diagrams */
 .circuit-diagram {
@@ -314,8 +383,9 @@ main {
 
 .gate.active {
     border-color: var(--success-color);
-    box-shadow: 0 0 15px rgba(16, 185, 129, 0.5);
+    box-shadow: 0 0 15px var(--success-color);
 }
+
 
 .gate-body {
     font-size: 1.2rem;
@@ -330,8 +400,9 @@ main {
 
 .wire.active {
     background: var(--success-color);
-    box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+    box-shadow: 0 0 10px var(--success-color);
 }
+
 
 .circuit-label, .input-label, .output-label {
     color: var(--text-secondary);
@@ -416,8 +487,9 @@ main {
     width: 2px;
     height: 60px;
     background: var(--primary-color);
-    animation: pulse 1s infinite;
+    animation: pulse 1.5s infinite;
 }
+
 
 /* Truth Tables */
 .truth-table-container {
@@ -462,17 +534,19 @@ main {
 }
 
 .truth-table tr.highlighted {
-    background: rgba(16, 185, 129, 0.2);
+    background: rgba(0, 255, 102, 0.2);
     border-left: 4px solid var(--success-color);
 }
 
 .truth-table tr.invalid {
-    background: rgba(239, 68, 68, 0.1);
+    background: rgba(255, 0, 0, 0.1);
 }
 
 .truth-table tr.invalid td {
     color: var(--danger-color);
+    font-weight: bold;
 }
+
 
 /* Equation Box */
 .equation-box {
@@ -480,8 +554,9 @@ main {
     padding: 25px;
     border-radius: 12px;
     text-align: center;
-    border: 2px solid var(--secondary-color);
+    border: 2px solid var(--primary-color);
 }
+
 
 .equation-box h3 {
     margin-bottom: 15px;
@@ -553,13 +628,15 @@ main {
     background: var(--primary-color);
     border-color: var(--primary-color);
     color: var(--bg-dark);
+    font-weight: bold;
 }
+
 
 .clock-btn {
     padding: 10px 25px;
-    background: linear-gradient(135deg, var(--success-color), #059669);
+    background: var(--success-color);
     border: none;
-    color: white;
+    color: var(--bg-dark);
     border-radius: 8px;
     cursor: pointer;
     font-size: 1rem;
@@ -569,8 +646,9 @@ main {
 
 .clock-btn:hover {
     transform: scale(1.05);
-    box-shadow: 0 5px 20px rgba(16, 185, 129, 0.4);
+    box-shadow: 0 5px 20px var(--success-color);
 }
+
 
 .clock-btn:active {
     transform: scale(0.95);
@@ -598,7 +676,7 @@ main {
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    background: #333;
+    background: var(--led-off);
     border: 3px solid var(--border-color);
     display: flex;
     align-items: center;
@@ -606,13 +684,16 @@ main {
     font-size: 1.5rem;
     font-weight: bold;
     transition: all 0.3s ease;
+    color: var(--text-secondary);
 }
 
 .led.on {
     background: var(--success-color);
     border-color: var(--success-color);
-    box-shadow: 0 0 25px rgba(16, 185, 129, 0.7);
+    color: var(--bg-dark);
+    box-shadow: 0 0 25px var(--success-color);
 }
+
 
 .demo-status {
     text-align: center;
@@ -621,7 +702,9 @@ main {
     border-radius: 8px;
     color: var(--primary-color);
     font-weight: bold;
+    border: 1px solid var(--border-color);
 }
+
 
 /* Timing Diagram */
 .timing-diagram-container {
@@ -677,7 +760,9 @@ main {
     padding: 10px;
     background: var(--bg-light);
     border-radius: 8px;
+    border: 1px solid var(--border-color);
 }
+
 
 .annotation-label {
     display: block;
@@ -718,7 +803,10 @@ main {
     font-family: 'Courier New', monospace;
     color: var(--success-color);
     text-align: center;
+    border: 1px solid var(--success-color);
+    font-weight: bold;
 }
+
 
 /* Metastability */
 .metastability-section {
@@ -731,7 +819,9 @@ main {
 .metastability-section h3 {
     color: var(--danger-color);
     margin-bottom: 15px;
+    text-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
 }
+
 
 .meta-animation {
     display: flex;
@@ -752,12 +842,14 @@ main {
 }
 
 .solution-box {
-    background: rgba(16, 185, 129, 0.1);
-    border: 1px solid var(--success-color);
+    background: rgba(0, 255, 102, 0.1);
+    border: 2px solid var(--success-color);
     padding: 15px;
     border-radius: 8px;
     margin-top: 15px;
+    color: var(--success-color);
 }
+
 
 /* Timing Animation Demo */
 .timing-animation {
@@ -803,16 +895,18 @@ main {
 }
 
 .timing-state.active {
-    background: rgba(16, 185, 129, 0.2);
-    border: 1px solid var(--success-color);
+    background: rgba(0, 255, 102, 0.2);
+    border: 2px solid var(--success-color);
     color: var(--success-color);
+    font-weight: bold;
 }
+
 
 .animate-btn {
     padding: 12px 30px;
-    background: linear-gradient(135deg, var(--secondary-color), #6366f1);
+    background: var(--primary-color);
     border: none;
-    color: white;
+    color: var(--bg-dark);
     border-radius: 8px;
     cursor: pointer;
     font-size: 1rem;
@@ -822,8 +916,9 @@ main {
 
 .animate-btn:hover {
     transform: scale(1.05);
-    box-shadow: 0 5px 20px rgba(124, 58, 237, 0.4);
+    box-shadow: 0 5px 20px var(--shadow-color);
 }
+
 
 /* Advantages List */
 .advantages-list {
@@ -863,8 +958,9 @@ main {
 
 .application-card:hover {
     border-color: var(--primary-color);
-    box-shadow: 0 10px 30px rgba(0, 212, 255, 0.1);
+    box-shadow: 0 10px 30px var(--shadow-color);
 }
+
 
 .application-card h3 {
     color: var(--primary-color);
@@ -901,7 +997,7 @@ main {
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    background: #333;
+    background: var(--led-off);
     border: 3px solid var(--border-color);
     display: flex;
     align-items: center;
@@ -909,13 +1005,16 @@ main {
     font-size: 1.5rem;
     font-weight: bold;
     transition: all 0.3s ease;
+    color: var(--text-secondary);
 }
 
 .bit-led.on {
     background: var(--success-color);
     border-color: var(--success-color);
-    box-shadow: 0 0 20px rgba(16, 185, 129, 0.6);
+    color: var(--bg-dark);
+    box-shadow: 0 0 20px var(--success-color);
 }
+
 
 .counter-value {
     font-size: 2rem;
@@ -924,11 +1023,11 @@ main {
     font-weight: bold;
 }
 
-.counter-btn, .counter-btn {
+.counter-btn {
     padding: 12px 30px;
-    background: linear-gradient(135deg, var(--success-color), #059669);
+    background: var(--success-color);
     border: none;
-    color: white;
+    color: var(--bg-dark);
     border-radius: 8px;
     cursor: pointer;
     font-size: 1rem;
@@ -938,7 +1037,9 @@ main {
 
 .counter-btn:hover {
     transform: scale(1.05);
+    box-shadow: 0 5px 20px var(--success-color);
 }
+
 
 /* Shift Register Demo */
 .shift-demo {
@@ -996,9 +1097,9 @@ main {
 
 .shift-btn {
     padding: 10px 25px;
-    background: linear-gradient(135deg, var(--secondary-color), #6366f1);
+    background: var(--primary-color);
     border: none;
-    color: white;
+    color: var(--bg-dark);
     border-radius: 8px;
     cursor: pointer;
     font-size: 1rem;
@@ -1008,7 +1109,9 @@ main {
 
 .shift-btn:hover {
     transform: scale(1.05);
+    box-shadow: 0 5px 20px var(--shadow-color);
 }
+
 
 /* Register Demo */
 .register-demo {
@@ -1044,9 +1147,9 @@ main {
 
 .register-btn {
     padding: 12px 35px;
-    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    background: var(--primary-color);
     border: none;
-    color: white;
+    color: var(--bg-dark);
     border-radius: 8px;
     cursor: pointer;
     font-size: 1rem;
@@ -1056,8 +1159,9 @@ main {
 
 .register-btn:hover {
     transform: scale(1.05);
-    box-shadow: 0 5px 20px rgba(0, 212, 255, 0.4);
+    box-shadow: 0 5px 20px var(--shadow-color);
 }
+
 
 /* Footer */
 footer {
@@ -1065,9 +1169,10 @@ footer {
     padding: 30px;
     background: var(--bg-card);
     margin-top: 40px;
-    border-top: 1px solid var(--border-color);
+    border-top: 2px solid var(--primary-color);
     color: var(--text-secondary);
 }
+
 
 .branding {
     margin-top: 10px;
@@ -1218,7 +1323,7 @@ footer {
 
 @keyframes highlightPulse {
     0% {
-        background: rgba(0, 212, 255, 0.5);
+        background: var(--shadow-color);
     }
     100% {
         background: transparent;
