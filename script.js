@@ -19,7 +19,11 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize type item navigation
     initTypeItems();
+    
+    // Initialize music toggle
+    initMusicToggle();
 });
+
 
 // ==================== THEME TOGGLE ====================
 function initThemeToggle() {
@@ -820,3 +824,36 @@ document.querySelectorAll('.concept-card, .truth-table tbody tr, .circuit-diagra
     el.style.transition = 'all 0.5s ease-out';
     observer.observe(el);
 });
+
+// ==================== MUSIC TOGGLE ====================
+function initMusicToggle() {
+    const musicToggle = document.getElementById('music-toggle');
+    const backgroundMusic = document.getElementById('background-music');
+    
+    if (!musicToggle || !backgroundMusic) return;
+    
+    // Check for saved music preference
+    const savedMusicState = localStorage.getItem('musicEnabled');
+    if (savedMusicState === 'true') {
+        musicToggle.checked = true;
+        backgroundMusic.play().catch(e => {
+            console.log('Auto-play prevented by browser:', e);
+        });
+    }
+    
+    musicToggle.addEventListener('change', () => {
+        if (musicToggle.checked) {
+            // Play music
+            backgroundMusic.play().then(() => {
+                localStorage.setItem('musicEnabled', 'true');
+            }).catch(e => {
+                console.log('Play failed:', e);
+                musicToggle.checked = false;
+            });
+        } else {
+            // Pause music
+            backgroundMusic.pause();
+            localStorage.setItem('musicEnabled', 'false');
+        }
+    });
+}

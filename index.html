@@ -755,7 +755,20 @@
         <p class="branding">Made with ❤️ by Sarthak Singh Gaur</p>
     </footer>
 
+    <!-- Audio element for song.mp3 -->
+    <audio id="background-music" loop>
+        <source src="song.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
 
+    <!-- Music Toggle Switch -->
+    <div class="music-toggle-container" id="music-toggle-container">
+        <span class="music-toggle-label">Music</span>
+        <label class="music-switch">
+            <input type="checkbox" id="music-toggle">
+            <span class="music-slider"></span>
+        </label>
+    </div>
 
     <script src="script.js"></script>
 </body>
