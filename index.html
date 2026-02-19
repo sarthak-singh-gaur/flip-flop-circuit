@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flip-Flops in Computer Organization</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Flip-Flops: The Building Blocks of Digital Memory</h1>
+        <p class="subtitle">An Interactive Guide to Understanding Sequential Logic</p>
+        <p class="header-brand">Made by Sarto</p>
+    </header>
+
+    <nav class="navigation">
+        <button class="nav-btn active" data-section="intro">Introduction</button>
+        <button class="nav-btn" data-section="sr">SR Flip-Flop</button>
+        <button class="nav-btn" data-section="jk">JK Flip-Flop</button>
+        <button class="nav-btn" data-section="d">D Flip-Flop</button>
+        <button class="nav-btn" data-section="t">T Flip-Flop</button>
+        <button class="nav-btn" data-section="master-slave">Master-Slave</button>
+        <button class="nav-btn" data-section="timing">Timing</button>
+        <button class="nav-btn" data-section="applications">Applications</button>
+    </nav>
+
+    <main>
+        <!-- Introduction Section -->
+        <section id="intro" class="content-section active">
+            <h2>What is a Flip-Flop?</h2>
+            <div class="intro-content">
+                <div class="concept-card">
+                    <h3>🔄 Sequential Logic</h3>
+                    <p>A flip-flop is a fundamental digital circuit that serves as a <strong>single-bit memory element</strong>. It maintains one of two stable states (0 or 1) until changed by an input.</p>
+                </div>
+                <div class="concept-card">
+                    <h3>⚡ Memory Element</h3>
+                    <p>Unlike combinational circuits which produce outputs solely from current inputs, flip-flops introduce <strong>memory</strong> by depending on past states.</p>
+                </div>
+                <div class="concept-card">
+                    <h3>🎯 Clocked Operation</h3>
+                    <p>Flip-flops synchronize with clock signals, triggering state changes at precise edges (rising/falling), enabling predictable behavior in synchronous systems.</p>
+                </div>
+            </div>
+
+            <div class="flip-flop-types">
+                <h3>Types of Flip-Flops</h3>
+                <div class="types-grid">
+                    <div class="type-item" data-type="sr">
+                        <span class="type-icon">SR</span>
+                        <span>Set-Reset</span>
+                    </div>
+                    <div class="type-item" data-type="jk">
+                        <span class="type-icon">JK</span>
+                        <span>Universal</span>
+                    </div>
+                    <div class="type-item" data-type="d">
+                        <span class="type-icon">D</span>
+                        <span>Data</span>
+                    </div>
+                    <div class="type-item" data-type="t">
+                        <span class="type-icon">T</span>
+                        <span>Toggle</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="latch-vs-flipflop">
+                <h3>Latch vs Flip-Flop</h3>
+                <div class="comparison-container">
+                    <div class="comparison-box latch">
+                        <h4>Latch</h4>
+                        <ul>
+                            <li>Level-sensitive</li>
+                            <li>Transparent while enabled</li>
+                            <li>Continuous input flow</li>
+                            <li>Timing hazards possible</li>
+                        </ul>
+                    </div>
+                    <div class="vs-divider">VS</div>
+                    <div class="comparison-box flipflop">
+                        <h4>Flip-Flop</h4>
+                        <ul>
+                            <li>Edge-triggered</li>
+                            <li>Samples at clock transition</li>
+                            <li>Predictable timing</li>
+                            <li>Used in sync designs</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SR Flip-Flop Section -->
+        <section id="sr" class="content-section">
+            <h2>SR (Set-Reset) Flip-Flop</h2>
+            
+            <div class="section-content">
+                <div class="description">
+                    <p>The SR flip-flop has two inputs: <strong>S</strong> (Set) and <strong>R</strong> (Reset). When S=1, Q becomes 1. When R=1, Q becomes 0. Both 0 maintains the current state.</p>
+                    <div class="warning-box">
+                        <strong>⚠️ Invalid State:</strong> When S=R=1, both Q and ~Q become 0, which is undefined behavior.
+                    </div>
+                </div>
+
+                <div class="circuit-diagram">
+                    <h3>NOR-Based SR Latch</h3>
+                    <div class="nor-circuit" id="nor-sr-latch">
+                        <div class="circuit-label">S</div>
+                        <div class="gate nor-gate" id="nor1">
+                            <div class="gate-body">≥1</div>
+                            <div class="gate-output"></div>
+                        </div>
+                        <div class="wire wire-horizontal" id="wire-s-1"></div>
+                        <div class="wire wire-vertical" id="wire-q-out"></div>
+                        <div class="output-label">Q</div>
+                        
+                        <div class="circuit-label">R</div>
+                        <div class="gate nor-gate" id="nor2">
+                            <div class="gate-body">≥1</div>
+                            <div class="gate-output"></div>
+                        </div>
+                        <div class="wire wire-horizontal" id="wire-r-1"></div>
+                        <div class="wire wire-vertical" id="wire-nq-out"></div>
+                        <div class="output-label">~Q</div>
+                    </div>
+                </div>
+
+                <div class="truth-table-container">
+                    <h3>Truth Table</h3>
+                    <table class="truth-table" id="sr-truth-table">
+                        <thead>
+                            <tr>
+                                <th>S</th>
+                                <th>R</th>
+                                <th>Q<sub>next</sub></th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr data-inputs="00">
+                                <td>0</td>
+                                <td>0</td>
+                                <td>Q</td>
+                                <td>Hold State</td>
+                            </tr>
+                            <tr data-inputs="01">
+                                <td>0</td>
+                                <td>1</td>
+                                <td>0</td>
+                                <td>Reset</td>
+                            </tr>
+                            <tr data-inputs="10">
+                                <td>1</td>
+                                <td>0</td>
+                                <td>1</td>
+                                <td>Set</td>
+                            </tr>
+                            <tr data-inputs="11" class="invalid">
+                                <td>1</td>
+                                <td>1</td>
+                                <td>?</td>
+                                <td>Invalid</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="equation-box">
+                    <h3>Characteristic Equation</h3>
+                    <div class="equation">Q<sub>next</sub> = S + <span class="bar">R</span>Q</div>
+                </div>
+
+                <div class="interactive-demo">
+                    <h3>Interactive Demo</h3>
+                    <div class="demo-controls">
+                        <div class="input-group">
+                            <label>S (Set):</label>
+                            <button class="bit-btn" data-input="s" data-value="0">0</button>
+                            <button class="bit-btn" data-input="s" data-value="1">1</button>
+                        </div>
+                        <div class="input-group">
+                            <label>R (Reset):</label>
+                            <button class="bit-btn" data-input="r" data-value="0">0</button>
+                            <button class="bit-btn" data-input="r" data-value="1">1</button>
+                        </div>
+                    </div>
+                    <div class="demo-output">
+                        <div class="output-display">
+                            <span>Q:</span>
+                            <div class="led" id="sr-q-led">0</div>
+                        </div>
+                        <div class="output-display">
+                            <span>~Q:</span>
+                            <div class="led" id="sr-nq-led">1</div>
+                        </div>
+                    </div>
+                    <div class="demo-status" id="sr-status">Hold State</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- JK Flip-Flop Section -->
+        <section id="jk" class="content-section">
+            <h2>JK Flip-Flop</h2>
+            
+            <div class="section-content">
+                <div class="description">
+                    <p>The JK flip-flop improves on SR by eliminating the invalid state and adding a <strong>toggle</strong> capability. When J=K=1, the output toggles.</p>
+                </div>
+
+                <div class="circuit-diagram">
+                    <h3>JK Flip-Flop Circuit</h3>
+                    <div class="jk-circuit" id="jk-circuit">
+                        <div class="jk-inputs">
+                            <div class="input-line">
+                                <span class="input-label">J</span>
+                                <div class="wire"></div>
+                            </div>
+                            <div class="input-line">
+                                <span class="input-label">CLK</span>
+                                <div class="wire clock-wire"></div>
+                            </div>
+                            <div class="input-line">
+                                <span class="input-label">K</span>
+                                <div class="wire"></div>
+                            </div>
+                        </div>
+                        <div class="jk-gates">
+                            <div class="and-gate">AND</div>
+                            <div class="and-gate">AND</div>
+                        </div>
+                        <div class="jk-outputs">
+                            <div class="output-line">
+                                <div class="wire"></div>
+                                <span class="output-label">Q</span>
+                            </div>
+                            <div class="output-line">
+                                <div class="wire"></div>
+                                <span class="output-label">~Q</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="truth-table-container">
+                    <h3>Truth Table</h3>
+                    <table class="truth-table" id="jk-truth-table">
+                        <thead>
+                            <tr>
+                                <th>J</th>
+                                <th>K</th>
+                                <th>Q<sub>next</sub></th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr data-inputs="00">
+                                <td>0</td>
+                                <td>0</td>
+                                <td>Q</td>
+                                <td>Hold</td>
+                            </tr>
+                            <tr data-inputs="01">
+                                <td>0</td>
+                                <td>1</td>
+                                <td>0</td>
+                                <td>Reset</td>
+                            </tr>
+                            <tr data-inputs="10">
+                                <td>1</td>
+                                <td>0</td>
+                                <td>1</td>
+                                <td>Set</td>
+                            </tr>
+                            <tr data-inputs="11">
+                                <td>1</td>
+                                <td>1</td>
+                                <td>~Q</td>
+                                <td>Toggle</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="equation-box">
+                    <h3>Characteristic Equation</h3>
+                    <div class="equation">Q<sub>next</sub> = J<span class="bar">Q</span> + <span class="bar">K</span>Q</div>
+                </div>
+
+                <div class="interactive-demo">
+                    <h3>Interactive Demo</h3>
+                    <div class="demo-controls">
+                        <div class="input-group">
+                            <label>J:</label>
+                            <button class="bit-btn" data-input="j" data-value="0">0</button>
+                            <button class="bit-btn" data-input="j" data-value="1">1</button>
+                        </div>
+                        <div class="input-group">
+                            <label>K:</label>
+                            <button class="bit-btn" data-input="k" data-value="0">0</button>
+                            <button class="bit-btn" data-input="k" data-value="1">1</button>
+                        </div>
+                        <div class="input-group">
+                            <button class="clock-btn" id="jk-clock-btn">Clock ↑</button>
+                        </div>
+                    </div>
+                    <div class="demo-output">
+                        <div class="output-display">
+                            <span>Q:</span>
+                            <div class="led" id="jk-q-led">0</div>
+                        </div>
+                        <div class="output-display">
+                            <span>~Q:</span>
+                            <div class="led" id="jk-nq-led">1</div>
+                        </div>
+                    </div>
+                    <div class="demo-status" id="jk-status">Hold</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- D Flip-Flop Section -->
+        <section id="d" class="content-section">
+            <h2>D (Data) Flip-Flop</h2>
+            
+            <div class="section-content">
+                <div class="description">
+                    <p>The D flip-flop is the simplest and most commonly used flip-flop. On the clock edge, the output Q takes the value of input D. It's perfect for data storage.</p>
+                </div>
+
+                <div class="circuit-diagram">
+                    <h3>D Flip-Flop (Edge-Triggered)</h3>
+                    <div class="d-circuit" id="d-circuit">
+                        <div class="d-input">
+                            <span class="input-label">D</span>
+                            <div class="wire"></div>
+                        </div>
+                        <div class="transmission-gates">
+                            <div class="tg-label">Master</div>
+                            <div class="gate-box">TG</div>
+                        </div>
+                        <div class="inverter">
+                            <div class="gate-box">INV</div>
+                        </div>
+                        <div class="slave-section">
+                            <div class="tg-label">Slave</div>
+                            <div class="gate-box">TG</div>
+                        </div>
+                        <div class="d-outputs">
+                            <span class="output-label">Q</span>
+                            <span class="output-label">~Q</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="truth-table-container">
+                    <h3>Truth Table</h3>
+                    <table class="truth-table" id="d-truth-table">
+                        <thead>
+                            <tr>
+                                <th>D</th>
+                                <th>CLK</th>
+                                <th>Q<sub>next</sub></th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr data-inputs="0">
+                                <td>0</td>
+                                <td>↑</td>
+                                <td>0</td>
+                                <td>Store 0</td>
+                            </tr>
+                            <tr data-inputs="1">
+                                <td>1</td>
+                                <td>↑</td>
+                                <td>1</td>
+                                <td>Store 1</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="equation-box">
+                    <h3>Characteristic Equation</h3>
+                    <div class="equation">Q<sub>next</sub> = D</div>
+                </div>
+
+                <div class="interactive-demo">
+                    <h3>Interactive Demo</h3>
+                    <div class="demo-controls">
+                        <div class="input-group">
+                            <label>D (Data):</label>
+                            <button class="bit-btn" data-input="d" data-value="0">0</button>
+                            <button class="bit-btn" data-input="d" data-value="1">1</button>
+                        </div>
+                        <div class="input-group">
+                            <button class="clock-btn" id="d-clock-btn">Clock ↑</button>
+                        </div>
+                    </div>
+                    <div class="demo-output">
+                        <div class="output-display">
+                            <span>Q:</span>
+                            <div class="led" id="d-q-led">0</div>
+                        </div>
+                        <div class="output-display">
+                            <span>~Q:</span>
+                            <div class="led" id="d-nq-led">1</div>
+                        </div>
+                    </div>
+                    <div class="demo-status" id="d-status">Waiting for clock...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- T Flip-Flop Section -->
+        <section id="t" class="content-section">
+            <h2>T (Toggle) Flip-Flop</h2>
+            
+            <div class="section-content">
+                <div class="description">
+                    <p>The T flip-flop has a single input T (Toggle). When T=1, the output toggles on each clock edge. When T=0, the state is held. Ideal for counters.</p>
+                </div>
+
+                <div class="circuit-diagram">
+                    <h3>T Flip-Flop (from JK)</h3>
+                    <div class="t-circuit" id="t-circuit">
+                        <div class="t-input">
+                            <span class="input-label">T</span>
+                            <div class="wire"></div>
+                        </div>
+                        <div class="jk-derived">
+                            <div class="jk-box">JK (J=K=T)</div>
+                        </div>
+                        <div class="t-output">
+                            <span class="output-label">Q</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="truth-table-container">
+                    <h3>Truth Table</h3>
+                    <table class="truth-table" id="t-truth-table">
+                        <thead>
+                            <tr>
+                                <th>T</th>
+                                <th>CLK</th>
+                                <th>Q<sub>next</sub></th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr data-inputs="0">
+                                <td>0</td>
+                                <td>↑</td>
+                                <td>Q</td>
+                                <td>Hold</td>
+                            </tr>
+                            <tr data-inputs="1">
+                                <td>1</td>
+                                <td>↑</td>
+                                <td>~Q</td>
+                                <td>Toggle</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="equation-box">
+                    <h3>Characteristic Equation</h3>
+                    <div class="equation">Q<sub>next</sub> = T ⊕ Q</div>
+                </div>
+
+                <div class="interactive-demo">
+                    <h3>Interactive Demo</h3>
+                    <div class="demo-controls">
+                        <div class="input-group">
+                            <label>T (Toggle):</label>
+                            <button class="bit-btn" data-input="t" data-value="0">0</button>
+                            <button class="bit-btn" data-input="t" data-value="1">1</button>
+                        </div>
+                        <div class="input-group">
+                            <button class="clock-btn" id="t-clock-btn">Clock ↑</button>
+                        </div>
+                    </div>
+                    <div class="demo-output">
+                        <div class="output-display">
+                            <span>Q:</span>
+                            <div class="led" id="t-q-led">0</div>
+                        </div>
+                    </div>
+                    <div class="demo-status" id="t-status">Hold - Waiting for clock...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Master-Slave Section -->
+        <section id="master-slave" class="content-section">
+            <h2>Master-Slave Flip-Flop</h2>
+            
+            <div class="section-content">
+                <div class="description">
+                    <p>The master-slave flip-flop consists of two latches in series. The master captures input when clock is low, and the slave transfers to output when clock is high. This prevents race conditions.</p>
+                </div>
+
+                <div class="circuit-diagram">
+                    <h3>Master-Slave Structure</h3>
+                    <div class="master-slave-circuit" id="ms-circuit">
+                        <div class="ms-master">
+                            <div class="ms-label">Master Latch</div>
+                            <div class="latch-box">
+                                <div class="latch-inputs">D</div>
+                                <div class="latch-gates">Latches</div>
+                            </div>
+                        </div>
+                        <div class="ms-connection">
+                            <div class="connection-line"></div>
+                            <span class="connection-label">CLK</span>
+                        </div>
+                        <div class="ms-slave">
+                            <div class="ms-label">Slave Latch</div>
+                            <div class="latch-box">
+                                <div class="latch-outputs">Q</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timing-animation">
+                    <h3>How It Works (Animation)</h3>
+                    <div class="timing-demo" id="ms-timing-demo">
+                        <div class="timing-row">
+                            <span class="timing-label">CLK</span>
+                            <div class="timing-wave" id="ms-clock-wave"></div>
+                        </div>
+                        <div class="timing-row">
+                            <span class="timing-label">Master</span>
+                            <div class="timing-state" id="ms-master-state">Active (Latches)</div>
+                        </div>
+                        <div class="timing-row">
+                            <span class="timing-label">Slave</span>
+                            <div class="timing-state" id="ms-slave-state">Hold</div>
+                        </div>
+                        <button class="animate-btn" id="ms-animate-btn">Play Animation</button>
+                    </div>
+                </div>
+
+                <div class="advantages-list">
+                    <h3>Advantages</h3>
+                    <ul>
+                        <li>✓ Eliminates "1's catching" problem</li>
+                        <li>✓ Prevents race conditions</li>
+                        <li>✓ Stable edge-triggered behavior</li>
+                        <li>✓ Used in older synchronous designs</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Timing Section -->
+        <section id="timing" class="content-section">
+            <h2>Timing Concepts</h2>
+            
+            <div class="section-content">
+                <div class="timing-diagram-container">
+                    <h3>Setup and Hold Time</h3>
+                    <div class="timing-diagram" id="timing-diagram">
+                        <div class="timing-chart">
+                            <div class="timing-signal" id="timing-clock">
+                                <span class="signal-label">CLK</span>
+                                <svg class="clock-signal" viewBox="0 0 400 60">
+                                    <polyline points="0,30 50,30 50,10 100,10 100,30 150,30 150,10 200,10 200,30 250,30 250,10 300,10 300,30 350,30 350,10 400,10" fill="none" stroke="#00d4ff" stroke-width="2"/>
+                                </svg>
+                            </div>
+                            <div class="timing-signal" id="timing-data">
+                                <span class="signal-label">D</span>
+                                <svg class="data-signal" viewBox="0 0 400 60">
+                                    <polyline points="0,30 20,30 20,45 100,45 100,15 180,15 180,30 400,30" fill="none" stroke="#ff6b6b" stroke-width="2"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="timing-annotations">
+                            <div class="annotation setup-time">
+                                <span class="annotation-label">Setup Time (t<sub>su</sub>)</span>
+                                <div class="annotation-arrow">←───→</div>
+                            </div>
+                            <div class="annotation hold-time">
+                                <span class="annotation-label">Hold Time (t<sub>h</sub>)</span>
+                                <div class="annotation-arrow">←─→</div>
+                            </div>
+                            <div class="annotation prop-delay">
+                                <span class="annotation-label">Propagation Delay (t<sub>pd</sub>)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timing-concepts">
+                    <div class="timing-concept">
+                        <h4>Setup Time (t<sub>su</sub>)</h4>
+                        <p>Minimum time input must be stable before clock edge. Ensures proper capture of input data.</p>
+                    </div>
+                    <div class="timing-concept">
+                        <h4>Hold Time (t<sub>h</sub>)</h4>
+                        <p>Minimum time input must remain stable after clock edge. Prevents premature change.</p>
+                    </div>
+                    <div class="timing-concept">
+                        <h4>Propagation Delay (t<sub>pd</sub>)</h4>
+                        <p>Time from clock edge to output stable. Limits maximum clock frequency.</p>
+                        <div class="formula">f<sub>max</sub> = 1 / (t<sub>pd</sub> + t<sub>su</sub> + t<sub>h</sub>)</div>
+                    </div>
+                </div>
+
+                <div class="metastability-section">
+                    <h3>Metastability</h3>
+                    <p>When setup/hold times are violated, the output may oscillate before settling. This is called <strong>metastability</strong>.</p>
+                    <div class="meta-animation" id="meta-animation">
+                        <div class="meta-wave">
+                            <svg viewBox="0 0 300 80">
+                                <polyline id="meta-signal" points="0,40 50,40 70,10 90,70 110,40 150,40 200,40" fill="none" stroke="#ff6b6b" stroke-width="2"/>
+                            </svg>
+                        </div>
+                        <button class="animate-btn" id="meta-animate-btn">Show Metastability</button>
+                    </div>
+                    <div class="solution-box">
+                        <strong>Solution:</strong> Use synchronizers (2-3 flip-flops in series) to increase MTBF (Mean Time Between Failures).
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Applications Section -->
+        <section id="applications" class="content-section">
+            <h2>Applications</h2>
+            
+            <div class="section-content">
+                <div class="application-card">
+                    <h3>🔢 Binary Counter (Using T Flip-Flops)</h3>
+                    <p>A 3-bit synchronous counter using T flip-flops. Each flip-flop toggles when all lower bits are 1.</p>
+                    <div class="counter-demo" id="counter-demo">
+                        <div class="counter-outputs">
+                            <div class="counter-bit">
+                                <span class="bit-label">Q2</span>
+                                <div class="bit-led" id="counter-q2">0</div>
+                            </div>
+                            <div class="counter-bit">
+                                <span class="bit-label">Q1</span>
+                                <div class="bit-led" id="counter-q1">0</div>
+                            </div>
+                            <div class="counter-bit">
+                                <span class="bit-label">Q0</span>
+                                <div class="bit-led" id="counter-q0">0</div>
+                            </div>
+                        </div>
+                        <div class="counter-value" id="counter-value">000</div>
+                        <button class="counter-btn" id="counter-btn">Count</button>
+                        <button class="counter-btn" id="counter-reset">Reset</button>
+                    </div>
+                </div>
+
+                <div class="application-card">
+                    <h3>📝 Shift Register (Using D Flip-Flops)</h3>
+                    <p>A 4-bit shift register that shifts data left on each clock pulse.</p>
+                    <div class="shift-demo" id="shift-demo">
+                        <div class="shift-input">
+                            <label>Input:</label>
+                            <button class="bit-btn shift-bit-btn" data-shift-input="0">0</button>
+                            <button class="bit-btn shift-bit-btn" data-shift-input="1">1</button>
+                        </div>
+                        <div class="shift-register">
+                            <div class="sr-bit">
+                                <div class="bit-led" id="shift-q3">0</div>
+                                <span>Q3</span>
+                            </div>
+                            <div class="sr-bit">
+                                <div class="bit-led" id="shift-q2">0</div>
+                                <span>Q2</span>
+                            </div>
+                            <div class="sr-bit">
+                                <div class="bit-led" id="shift-q1">0</div>
+                                <span>Q1</span>
+                            </div>
+                            <div class="sr-bit">
+                                <div class="bit-led" id="shift-q0">0</div>
+                                <span>Q0</span>
+                            </div>
+                        </div>
+                        <div class="shift-controls">
+                            <button class="shift-btn" id="shift-btn">Shift</button>
+                            <button class="shift-btn" id="shift-reset">Clear</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="application-card">
+                    <h3>💾 Register (Using D Flip-Flops)</h3>
+                    <p>A 4-bit parallel register that stores data on clock edge.</p>
+                    <div class="register-demo" id="register-demo">
+                        <div class="register-inputs">
+                            <div class="reg-input">
+                                <label>D3</label>
+                                <button class="bit-btn reg-bit-btn" data-reg-input="3" data-value="0">0</button>
+                                <button class="bit-btn reg-bit-btn" data-reg-input="3" data-value="1">1</button>
+                            </div>
+                            <div class="reg-input">
+                                <label>D2</label>
+                                <button class="bit-btn reg-bit-btn" data-reg-input="2" data-value="0">0</button>
+                                <button class="bit-btn reg-bit-btn" data-reg-input="2" data-value="1">1</button>
+                            </div>
+                            <div class="reg-input">
+                                <label>D1</label>
+                                <button class="bit-btn reg-bit-btn" data-reg-input="1" data-value="0">0</button>
+                                <button class="bit-btn reg-bit-btn" data-reg-input="1" data-value="1">1</button>
+                            </div>
+                            <div class="reg-input">
+                                <label>D0</label>
+                                <button class="bit-btn reg-bit-btn" data-reg-input="0" data-value="0">0</button>
+                                <button class="bit-btn reg-bit-btn" data-reg-input="0" data-value="1">1</button>
+                            </div>
+                        </div>
+                        <div class="register-outputs">
+                            <div class="reg-bit">
+                                <div class="bit-led" id="reg-q3">0</div>
+                                <span>Q3</span>
+                            </div>
+                            <div class="reg-bit">
+                                <div class="bit-led" id="reg-q2">0</div>
+                                <span>Q2</span>
+                            </div>
+                            <div class="reg-bit">
+                                <div class="bit-led" id="reg-q1">0</div>
+                                <span>Q1</span>
+                            </div>
+                            <div class="reg-bit">
+                                <div class="bit-led" id="reg-q0">0</div>
+                                <span>Q0</span>
+                            </div>
+                        </div>
+                        <button class="register-btn" id="register-btn">Load</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Flip-Flops in Computer Organization - Interactive Learning Guide</p>
+        <p class="branding">Made with ❤️ by Sarthak Singh Gaur</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
